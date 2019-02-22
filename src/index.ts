@@ -1,5 +1,5 @@
-import { KekkingBot } from './kekking-bot';
+import { Bot } from './bot';
 import { Container } from 'typescript-ioc';
 
-const bot: KekkingBot = Container.get(KekkingBot);
+const bot: Bot = Container.get(Bot);
 bot.start();
