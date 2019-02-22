@@ -15,7 +15,7 @@
 		"build": "npm run build:gulp -s",
 		"start": "npm run start:gulp -s"
 	},
-	"author": "DESPLATS Philippe <contact@redekproject.fr> (https://www.redekproject.fr)",
+	"author": "Gulliby",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/debug": "0.0.30",
