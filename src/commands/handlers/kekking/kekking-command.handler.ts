@@ -1,16 +1,20 @@
 import { Client, Message } from 'discord.js';
+import { Provides } from 'typescript-ioc';
 
 import { CommandLine } from '../../models/command-line';
-import { ICommandHandler } from '../icomand.handler';
+import { CommandHandler } from '../comand.handler';
 
-export class KekkingCommandHandler implements ICommandHandler {
+@Provides (CommandHandler)
+export class KekkingCommandHandler extends CommandHandler {
     private readonly defaultAnswer: string = 'kok';
 
     constructor(
-        public client: Client,
-        public message: Message) { }
+        public readonly client: Client,
+        public readonly message: Message) {
+        super();
+    }
 
-    public handle(commandLine: CommandLine): Promise<void> {
+    public async handle(commandLine: CommandLine): Promise<void> {
         if (commandLine.parameters && commandLine.parameters.length) {
             const userName = commandLine.parameters[0].toLowerCase();
 

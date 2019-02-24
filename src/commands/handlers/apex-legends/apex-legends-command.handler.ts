@@ -1,12 +1,16 @@
 import { Client, Message, RichEmbed } from 'discord.js';
+import { Provides } from 'typescript-ioc';
 
-import { ICommandHandler } from '../icomand.handler';
+import { CommandHandler } from '../comand.handler';
 import { CommandLine } from '../../models/command-line';
 
-export class ApexLegendsCommandHandler implements ICommandHandler {
+@Provides (CommandHandler)
+export class ApexLegendsCommandHandler extends CommandHandler {
     constructor(
-        public client: Client,
-        public message: Message) { }
+        public readonly client: Client,
+        public readonly message: Message) {
+        super();
+    }
 
     public async handle(commandLine: CommandLine): Promise<void> {
         if (commandLine.parameters.length !== 2) {
@@ -37,7 +41,6 @@ export class ApexLegendsCommandHandler implements ICommandHandler {
                                 this.message.channel.send(embed);
                             });
                     });
-                    return;
                 }
 
                 this.message.reply(`User ${commandLine.parameters[1]} on ${commandLine.parameters[0]} platform was not found.`);
