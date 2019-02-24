@@ -1,3 +1,4 @@
+import fetch, { Response } from 'node-fetch';
 import { Client, Message, RichEmbed } from 'discord.js';
 import { Provides } from 'typescript-ioc';
 
@@ -7,18 +8,18 @@ import { CommandLine } from '../../models/command-line';
 @Provides (CommandHandler)
 export class ApexLegendsCommandHandler extends CommandHandler {
     constructor(
-        public readonly client: Client,
-        public readonly message: Message) {
+        private readonly message: Message,
+        private readonly commandLine: CommandLine) {
         super();
     }
 
-    public async handle(commandLine: CommandLine): Promise<void> {
-        if (commandLine.parameters.length !== 2) {
+    public async handle(): Promise<void> {
+        if (this.commandLine.parameters.length !== 2) {
             this. message.reply('First parameter should be [Platform] and the second [UserName].');
             return;
         }
 
-        return await fetch(`https://apextab.com/api/search.php?platform=${commandLine.parameters[0]}&search=${commandLine.parameters[1]}`)
+        return await fetch(`https://apextab.com/api/search.php?platform=${this.commandLine.parameters[0]}&search=${this.commandLine.parameters[1]}`)
             .then((response: Response) => response.json())
             .then((body: any) => {
                 if (body && body.results) {
@@ -41,9 +42,10 @@ export class ApexLegendsCommandHandler extends CommandHandler {
                                 this.message.channel.send(embed);
                             });
                     });
+                    return;
                 }
 
-                this.message.reply(`User ${commandLine.parameters[1]} on ${commandLine.parameters[0]} platform was not found.`);
+                this.message.reply(`User ${this.commandLine.parameters[1]} on ${this.commandLine.parameters[0]} platform was not found.`);
             });
     }
 }

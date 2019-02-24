@@ -1,4 +1,4 @@
-import { Client, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import { Inject } from 'typescript-ioc';
 
 import { CommandLine } from '../models/command-line';
@@ -8,13 +8,14 @@ import { KekkingCommandHandler } from './kekking/kekking-command.handler';
 import { ApexLegendsCommandHandler } from './apex-legends/apex-legends-command.handler';
 import { CommandHandler } from './comand.handler';
 import { DefaultCommandHandler } from './default/default-command.handler';
+import { ClientWrapper } from './../../configuration/client.wrapper';
 
 // TODO: should be refactore (tried), using IOC-container
 export class CommandFactory {
     private readonly config: ConfigurationModel;
 
     constructor(
-        @Inject private readonly client: Client,
+        @Inject private readonly clientWrapper: ClientWrapper,
         @Inject readonly configurationService: ConfigurationService) {
             this.config = configurationService.getBotConfiguration();
         }
@@ -24,10 +25,10 @@ export class CommandFactory {
 
         switch (commandLine.prefix) {
             case this.config.prefix: {
-               return new KekkingCommandHandler(this.client, message);
+               return new KekkingCommandHandler(this.clientWrapper.Client, message, commandLine);
             }
             case `${this.config.prefix}n`: {
-                return new ApexLegendsCommandHandler(this.client, message);
+                return new ApexLegendsCommandHandler(message, commandLine);
             }
         }
 

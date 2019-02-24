@@ -1,3 +1,4 @@
+// TODO: rename to remove word Model.
 export class ConfigurationModel {
     constructor(
         public token: string,

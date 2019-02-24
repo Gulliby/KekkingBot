@@ -9,20 +9,22 @@ export class KekkingCommandHandler extends CommandHandler {
     private readonly defaultAnswer: string = 'kok';
 
     constructor(
-        public readonly client: Client,
-        public readonly message: Message) {
+        private readonly client: Client,
+        private readonly message: Message,
+        private readonly commandLine: CommandLine) {
         super();
     }
 
-    public async handle(commandLine: CommandLine): Promise<void> {
-        if (commandLine.parameters && commandLine.parameters.length) {
-            const userName = commandLine.parameters[0].toLowerCase();
+    public async handle(): Promise<void> {
+        if (this.commandLine.parameters && this.commandLine.parameters.length) {
+            const userName = this.commandLine.parameters[0].toLowerCase();
 
-            if (commandLine.parameters.length === 1) {
+            if (this.commandLine.parameters.length === 1) {
                 this.sendMessageToUser(userName, this.defaultAnswer);
+                return;
             }
 
-            this.sendMessageToUser(userName, commandLine.parameters.splice(1).join(' '));
+            this.sendMessageToUser(userName, this.commandLine.parameters.splice(1).join(' '));
         } else {
             this.message.reply(this.defaultAnswer);
         }

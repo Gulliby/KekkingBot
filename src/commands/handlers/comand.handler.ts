@@ -1,5 +1,4 @@
-import { CommandLine } from '../models/command-line';
-
+// TODO: commandLine should be int parameters of handle method.
 export abstract class CommandHandler {
-    protected abstract handle(commandLine: CommandLine): Promise<void>;
+    public abstract handle(): Promise<void>;
 }
